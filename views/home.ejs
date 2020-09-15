@@ -40,10 +40,12 @@
 <body>
 <div class="login-form">
     <h1 class="title">Check Balance (Tiny-Hbar)</h1>
-
-    <input type="text" name="username" id="username" placeholder="Amount to transfer" required>
+    <ul style="list-style-type:none;"><li class='mybalance'></li></ul>
+    <input type="text" name="username" id="username" placeholder="Recepient Account Id" required>
+    <input type="text" name="amount" id="amount" placeholder="Amount to transfer" required>
     <button class="trigger"  type="submit">Submit</button>
-    <li class='change'></li>
+    <ul style="list-style-type:none;"><li style='display:none;' class='send'>Sending...</li></ul>
+    <ul style="list-style-type:none;"><li class='change'></li></ul>
 
 </div>
 </body>
@@ -54,11 +56,14 @@
 
     function changeDom(){
         //ajax call
+       $('.send').show()
         var a = document.getElementById("username").value
+        var b = document.getElementById("amount").value
         $.ajax({
             url: '/change',
             method:'POST',
-            data: {accountId: a}
+            data: {accountId: a,
+            amount : b}
         }).done(function(data){
             //if we have a successful post request ...
             if(data.success){
@@ -67,7 +72,8 @@
                 //localStorage.setItem("permanentData", data.message);
                 // var savedText = localStorage.getItem("permanentData");
                 $('li.change').replaceWith(data.message);
-
+                //$('.send').hidden()
+                $('.send').css('display', 'none');
                 return;
             }
         }).fail(function(){
@@ -89,6 +95,11 @@
     $.get('/data', {}, function(data){
         console.log(data)
         $('h1.title').replaceWith(data)
+    });
+
+    $.get('/myBalance', {}, function(data){
+        console.log(data)
+        $('li.mybalance').replaceWith(data)
     });
 </script>
 </html>
