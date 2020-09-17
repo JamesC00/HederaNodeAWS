@@ -22,8 +22,8 @@ app.set('views', path.join(__dirname,'views'));
 app.set('view engine','ejs');
 
 app.get('/', function(request, response) {
-    response.render('login', {
-        title: 'login'
+    response.render('test', {
+        title: 'test'
     });
 });
 
